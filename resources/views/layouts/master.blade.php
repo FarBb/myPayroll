@@ -39,8 +39,9 @@
           
           {{-- content --}}
           @yield('content')
-          
         </section>
+          {{-- modal --}}
+          @yield('modal')
       </div>
       <footer class="main-footer">
         <div class="footer-left">

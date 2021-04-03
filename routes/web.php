@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/dashboard', function () { return view('index');})->name('dashboard');
 Route::get('/', function () {
     return view('index');
 });
@@ -20,3 +21,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', function () {
+    return view('index');
+})->name('dashboard');
+Route::resource('konfigurasi/setup', 'Konfigurasi\SetupController');
