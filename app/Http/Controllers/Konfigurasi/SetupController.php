@@ -17,8 +17,8 @@ class SetupController extends Controller
      */
     public function index()
     {
-        // $setup = Setup::get();
-        $setup = Setup::first();
+        $setup = Setup::get();
+        // $setup = Setup::first();
         // dd($setup);
         return view('konfigurasi.setup', ['setup' => $setup]);
     }
@@ -50,7 +50,7 @@ class SetupController extends Controller
         // $setup->save();
 
         Setup::create($request->all());
-        return redirect()->back();
+        return redirect()->back()->with('Success', 'Data Berhasil Ditambahkan');
     }
 
     /**

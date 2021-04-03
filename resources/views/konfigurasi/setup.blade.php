@@ -6,23 +6,28 @@
 </div>
 @endsection
 @section('content')
+
+
+@if (session('Success'))
+  <script>
+    swal('{{ session('Success') }}', {
+      icon: 'success',
+    });
+  </script>
+@endif
+
     <div class="section-body">
         <div class="card">
-            <div class="card-header">
-            </div>
             <div class="card-body">
               <div class="card">
                 <div class="card-header">
+                  {{-- ini sudah nggak object 
+                    @if (!$setup)            
+                             --}}
+                  @if (sizeof($setup) == 0)                    
                   <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Tambah Data</button>
+                  @endif
                     </div>
-                    @if (session('Success'))
-                        <script>
-                            swal('{{ session('Success') }}', {
-                                icon: 'success',
-                            });
-
-                        </script>
-                    @endif
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped" id="table-1">
@@ -35,25 +40,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($setup as $no => $a) --}}
+                                    @foreach ($setup as $no => $a)
                                         <tr>
-                                            <td>{{ 1 }}</td>
-                                            <td>{{ $setup->jumlah_hari_kerja }}</td>
-                                            <td>{{ $setup->nama_aplikasi }}</td>
+                                            <td>{{ $no+1 }}</td>
+                                            <td>{{ $a->jumlah_hari_kerja }}</td>
+                                            <td>{{ $a->nama_aplikasi }}</td>
                                             <td>
                                                 {{-- <a href="{{ route('', $setup->id) }}"
                                                     class="badge badge-primary">Edit</a> --}}
                                             </td>
                                         </tr>
-                                    {{-- @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-footer bg-whitesmoke">
-                This is card footer
             </div>
         </div>
     </div>
@@ -122,7 +124,7 @@
 @endsection
 
 @push('page-script')
-    <script src="{{ asset('assets/modules/sweetalert/dist/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('modules/sweetalert/dist/sweetalert.min.js') }}"></script>
 @endpush
 
 @push('after-script')
