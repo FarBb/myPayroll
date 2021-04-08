@@ -1,8 +1,8 @@
 @extends('layouts/master')
-@section('title', 'Konfigrasi')
+@section('title', 'Master Data')
 @section('judul-content')
 <div class="section-header">
-  <h1>Konfigurasi / Setup Aplikasi</h1> 
+  <h1>Master Data / Divisi</h1> 
 </div>
 @endsection
 @section('content')
@@ -19,13 +19,8 @@
         <div class="card">
             <div class="card-body">
               <div class="card">
-                <div class="card-header">
-                  {{-- ini sudah nggak object 
-                    @if (!$setup)            
-                             --}}
-                  @if (sizeof($setup) == 0)                    
+                <div class="card-header">                    
                   <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Tambah Data</button>
-                  @endif
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -33,17 +28,15 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Hari Kerja</th>
-                                        <th>Nama Aplikasi</th>
+                                        <th>Divisi</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($setup as $no => $a)
+                                    @foreach ($divisi as $no => $a)
                                         <tr>
                                             <td>{{ $no+1 }}</td>
-                                            <td>{{ $a->jumlah_hari_kerja }}</td>
-                                            <td>{{ $a->nama_aplikasi }}</td>
+                                            <td>{{ $a->divisi }}</td>
                                             <td>
                                                 <a href="#" data-id="{{ $a->id }}"
                                                     class="badge badge-primary btn-edit">Edit</a>

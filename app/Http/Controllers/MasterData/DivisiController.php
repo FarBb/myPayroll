@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Konfigurasi;
+namespace App\Http\Controllers\MasterData;
 
 use App\Http\Controllers\Controller;
-use App\Models\Setup;
+use App\Models\Divisi;
 use Illuminate\Http\Request;
 
-use function Ramsey\Uuid\v1;
-
-class SetupController extends Controller
+class DivisiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +15,8 @@ class SetupController extends Controller
      */
     public function index()
     {
-        $setup = Setup::get();
-        // $setup = Setup::first();
-        // dd($setup);
-        return view('konfigurasi.setup', ['setup' => $setup]);
+        $data = Divisi::get();
+        return view('masterdata.divisi', ['divisi' => $data]);
     }
 
     private function _validation(Request $request)
@@ -60,16 +56,8 @@ class SetupController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-
-        // save 
-        // $setup = new Setup;
-        // $setup->nama_aplikasi = $request->name;
-        // $setup->jumlah_hari_kerja = $request->jumlah_hari;
-        // $setup->save();
-
         $this->_validation($request);
-        Setup::create($request->all());
+        Divisi::create($request->all());
         return redirect()->back()->with('Success', 'Data Berhasil Ditambahkan');
     }
 
@@ -90,16 +78,10 @@ class SetupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // public function edit($id)
-    // {
-    //     $data = Setup::find($id);
-    //     return view('konfigurasi.setup-edit', ['setup' => $data]);
-    // }
 
-    // pake model
     public function edit(Setup $setup)
     {
-        return view('konfigurasi.setup-edit', compact('setup'));
+        return view('masterdata.devisi-edit', compact('setup'));
     }
 
     /**

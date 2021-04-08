@@ -25,3 +25,4 @@ Route::get('/dashboard', function () {
     return view('index');
 })->name('dashboard');
 Route::resource('konfigurasi/setup', 'Konfigurasi\SetupController');
+Route::resource('master-data/divisi', 'MasterData\DivisiController');

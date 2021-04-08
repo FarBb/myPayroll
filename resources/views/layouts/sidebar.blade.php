@@ -14,8 +14,10 @@
                   <i class="fas fa-fire"></i><span>Dashboard</span>
                 </a>
               </li>
+
               <li class="menu-header">Menu</li>
-              <li class="nav-item dropdown @if (Request::segment(1) == 'konfigurasi' and Request::segment(2) == 'setup') active @endif">
+              
+              <li class="nav-item dropdown @if (Request::segment(1) == 'konfigurasi') active @endif">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Konfigurasi</span></a>
                 <ul class="dropdown-menu">
                   <li class="@if (Request::segment(1) == 'konfigurasi' and Request::segment(2) == 'setup') active @endif">
@@ -23,10 +25,11 @@
                   </li>
                 </ul>
               </li>
-              <li class="nav-item dropdown">
+              
+              <li class="nav-item dropdown @if (Request::segment(1) == 'master-data') active @endif">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Master Data</span></a>
                 <ul class="dropdown-menu">
-                  <li><a class="nav-link" href="layout-transparent.html">Transparent Sidebar</a></li>
+                  <li class="@if (Request::segment(1) == 'master-data' and Request::segment(2) == 'divisi') active @endif"><a class="nav-link" href="{{route('divisi.index')}}">Divisi</a></li>
                   <li><a class="nav-link" href="layout-top-navigation.html">Top Navigation</a></li>
                 </ul>
               </li>
