@@ -10,7 +10,9 @@
 
 @if (session('Success'))
   <script>
-    swal('{{ session('Success') }}', {
+    swal
+    ({
+      title: '{{ session('Success') }}',
       icon: 'success',
     });
   </script>
@@ -35,16 +37,26 @@
                                 <tbody>
                                     @foreach ($divisi as $no => $a)
                                         <tr>
-                                            <td>{{ $no+1 }}</td>
-                                            <td>{{ $a->divisi }}</td>
+                                            {{-- <td>{{ $no+1 }}</td> --}}
+                                            <td>{{ $divisi->firstItem() + $no }}</td>
+                                            <td>{{ $a->nama }}</td>
                                             <td>
                                                 <a href="#" data-id="{{ $a->id }}"
                                                     class="badge badge-primary btn-edit">Edit</a>
+                                                <a href="#" data-id="{{ $a->id }}"
+                                                    class="badge badge-danger tombol-hapus">
+                                                  <form action="{{route('divisi.destroy', $a->id)}}" id="hapus{{$a->id}}" method="POST">
+                                                      @csrf
+                                                      @method('delete')
+                                                  </form>  
+                                                    Delete
+                                                  </a>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{ $divisi->links() }}
                         </div>
                     </div>
                 </div>
@@ -57,54 +69,35 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
+            <h5 class="modal-title">Tambah Divisi</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <form action="{{route('setup.store')}}" method="POST">
+            <form action="{{route('divisi.store')}}" method="POST">
               @csrf
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-12">
                     <div class="form-group">
-                      <label>Nama Aplikasi</label>
+                      <label>Nama Divisi</label>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
                               <i class="fas fa-lock"></i>
                             </div>
                           </div>
-                          <input type="text" class="form-control phone-number" name="nama_aplikasi"
-                                      value="{{ old('nama_aplikasi') }}">
+                          <input type="text" class="form-control phone-number" name="nama" value="{{ old('nama') }}" autocomplete="off" autofocus>
                         </div>
-                        <label @error('nama_aplikasi') class="text-danger" @enderror>@error('nama_aplikasi') {{ $message }}
+                        <label @error('nama') class="text-danger" @enderror>@error('nama') {{ $message }}
                         @enderror
                         </label>
                     </div>
                   </div>
-                  <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Jumlah Hari</label>
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <div class="input-group-text">
-                                <i class="fas fa-tablet"></i>
-                              </div>
-                            </div>
-                            <input type="text" class="form-control phone-number" name="jumlah_hari_kerja"
-                                  value="{{ old('jumlah_hari_kerja') }}">
-                          </div>
-                          <label @error('jumlah_hari_kerja') class="text-danger" @enderror>@error('jumlah_hari_kerja') {{ $message }}
-                          @enderror
-                          </label>
-                        </div>
-                      </div>
-                      <div class="col-lg-12">
-                        <button type="submit" class="btn btn-primary" id="save-btn">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      </div>
-                  </div>
+                  <div class="col-md-12" style="margin-top: -25px">
+                  <button type="submit" class="btn btn-primary" id="save-btn">Save</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
                 </div>
             </form>
           </div>
@@ -137,7 +130,7 @@
     </div>
     @endsection
 
-@endsection
+    @endsection
 
 @push('page-script')
     <script src="{{ asset('modules/sweetalert/dist/sweetalert.min.js') }}"></script>
@@ -148,29 +141,28 @@
         $(".tombol-hapus").click(function(e) {
             id = e.target.dataset.id;
             swal({
-                    {{-- title: 'Apakah Anda Yakin?' + id, --}}
-                    title: 'Apakah Anda Yakin?',
-                    {{-- text: 'Once deleted, you will not be able to recover this imaginary file!', --}}
                     icon: 'warning',
+                    title: 'Apakah Anda Yakin?',
                     buttons: true,
                 })
                 .then((willDelete) => {
                     if (willDelete) {
-                        {{-- swal('Data Berhasil Dihapus!', {
-                            icon: 'success',
-                        }); --}}
-                        $(`#delete${id}`).submit();
+                        $(`#hapus${id}`).submit();
                     } else {
                         swal('Penghapusan Data Dibatalkan!');
                     }
                 });
         });
 
+        @if($errors->any())
+          $('#exampleModal').modal('show');
+        @endif
+
         $(".btn-edit").on('click', function(){
-          // console.log($(this).data('id'))
+          console.log($(this).data('id'))
           let id = $(this).data('id')
           $.ajax({
-            url:`/konfigurasi/setup/${id}/edit`,
+            url:`/master-data/divisi/${id}/edit`,
             method:"GET",
             success: function(data) {
               // console.log(data)
@@ -190,7 +182,7 @@
           console.log(id)
           console.log(formData)
           $.ajax({
-            url:`/konfigurasi/setup/${id}`,
+            url:`/master-data/divisi/${id}`,
             method:"PUT",
             data:formData,
             success: function(data) {
@@ -200,7 +192,7 @@
                icon: 'success',
                title: 'Data Berhasil Di Ubah'
               }).then(function(){
-                window.location.assign('/konfigurasi/setup')
+                window.location.assign('/master-data/divisi')
               })                  
             },
             error:function(err){
@@ -208,7 +200,6 @@
               let err_log = err.responseJSON.errors;
               if(err.status == 422)
               {
-                // $('#modalEdit').find('[name="nama_aplikasi"]').prev().html('<span style="color:red">' +err_log.nama_aplikasi[0] +'</span>')
                 if(typeof(err_log.nama_aplikasi) !== 'undefined'){
                 $('#modalEdit').find('#labelErrorNama').html('<span style="color:red">' +err_log.nama_aplikasi[0] +'</span>')
                 } else {
@@ -221,7 +212,14 @@
                 else {
                   $('#modalEdit').find('#labelErrorHari').html('')
                 }
-
+              }
+              if(err.status == 500){
+                swal({
+                  icon: 'error',
+                  title: 'Data Gagal Ditambahkan'
+                  }).then(function(){
+                    window.location.assign('/master-data/divisi')
+                }) 
               }
             }
           })

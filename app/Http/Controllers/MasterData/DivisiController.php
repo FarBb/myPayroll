@@ -16,6 +16,7 @@ class DivisiController extends Controller
     public function index()
     {
         $data = Divisi::get();
+        $data = Divisi::paginate(3);
         return view('masterdata.divisi', ['divisi' => $data]);
     }
 
@@ -23,17 +24,12 @@ class DivisiController extends Controller
     {
         $validation = $request->validate(
             [
-                'nama_aplikasi' => 'required|max:10|min:3',
-                'jumlah_hari_kerja' => 'required|max:31|min:10|numeric'
+                'nama' => 'required|max:50|min:5',
             ],
             [
-                'nama_aplikasi.required' => 'Nama Aplikasi Harus Di Isi',
-                'nama_aplikasi.max' => 'Nama Aplikasi Maksimal 10 Karakter',
-                'nama_aplikasi.min' => 'Nama Aplikasi Minimal 3 Karakter',
-                'jumlah_hari_kerja.required' => 'Jumlah Hari Kerja Harus Di Isi',
-                'jumlah_hari_kerja.numeric' => 'Jumlah Hari Harus Berisi Angka',
-                'jumlah_hari_kerja.max' => 'Jumlah Hari kerja maksimal 31 Hari',
-                'jumlah_hari_kerja.min' => 'Jumlah Hari Kerja minimal 9 Hari',
+                'nama.required' => 'Nama Divisi Harus Di Isi',
+                'nama.max' => 'Nama Divisi Maksimal 50 Karakter',
+                'nama.min' => 'Nama Divisi Minimal 5 Karakter'
             ]
         );
     }
@@ -56,6 +52,7 @@ class DivisiController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $this->_validation($request);
         Divisi::create($request->all());
         return redirect()->back()->with('Success', 'Data Berhasil Ditambahkan');
@@ -79,9 +76,9 @@ class DivisiController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function edit(Setup $setup)
+    public function edit(Divisi $divisi)
     {
-        return view('masterdata.devisi-edit', compact('setup'));
+        return view('masterdata.divisi-edit', compact('divisi'));
     }
 
     /**
@@ -94,7 +91,7 @@ class DivisiController extends Controller
     public function update(Request $request, $id)
     {
         $this->_validation($request);
-        Setup::where('id', $id)->update(['nama_aplikasi' => $request->nama_aplikasi, 'jumlah_hari_kerja' => $request->jumlah_hari_kerja]);
+        Divisi::where('id', $id)->update(['nama' => $request->nama]);
     }
 
     /**
@@ -105,6 +102,7 @@ class DivisiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Divisi::destroy($id);
+        return redirect()->route('divisi.index')->with('Success', 'Data Berhasil Dihapus');
     }
 }

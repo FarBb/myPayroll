@@ -191,6 +191,11 @@
           })
         })
 
+
+        @if($errors->any())
+          $('#exampleModal').modal('show');
+        @endif
+
         $(".btn-update").on('click', function(){
           let id = $('#formEdit').find('#id_data').val()
           let formData = $('#formEdit').serialize()
@@ -210,6 +215,7 @@
                 window.location.assign('/konfigurasi/setup')
               })                  
             },
+            
             error:function(err){
               console.log(err.responseJSON)
               let err_log = err.responseJSON.errors;
@@ -228,7 +234,14 @@
                 else {
                   $('#modalEdit').find('#labelErrorHari').html('')
                 }
-
+              }
+              if(err.status == 500){
+                swal({
+                  icon: 'failed',
+                  title: 'Data Berhasil Gagal Ditambahkan'
+                  }).then(function(){
+                    window.location.assign('/konfigurasi/setup')
+                }) 
               }
             }
           })
