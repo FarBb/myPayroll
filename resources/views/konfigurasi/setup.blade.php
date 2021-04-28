@@ -10,7 +10,7 @@
 
 @if (session('Success'))
   <script>
-    swal('{{ session('Success') }}', {
+    swal('{{ session('Success') }}' {
       icon: 'success',
     });
   </script>
@@ -172,7 +172,6 @@
                     }
                 });
         });
-
         $(".btn-edit").on('click', function(){
           // console.log($(this).data('id'))
           let id = $(this).data('id')
@@ -190,12 +189,9 @@
             }
           })
         })
-
-
         @if($errors->any())
           $('#exampleModal').modal('show');
         @endif
-
         $(".btn-update").on('click', function(){
           let id = $('#formEdit').find('#id_data').val()
           let formData = $('#formEdit').serialize()
@@ -227,7 +223,6 @@
                 } else {
                   $('#modalEdit').find('#labelErrorNama').html('')
                 }
-
                 if(typeof(err_log.jumlah_hari_kerja) !== 'undefined'){
                   $('#modalEdit').find('#labelErrorHari').html('<span style="color:red">' +err_log.jumlah_hari_kerja[0] +'</span>')
                 }

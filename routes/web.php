@@ -26,3 +26,4 @@ Route::get('/dashboard', function () {
 })->name('dashboard');
 Route::resource('konfigurasi/setup', 'Konfigurasi\SetupController');
 Route::resource('master-data/divisi', 'MasterData\DivisiController');
+Route::resource('master-data/karyawan', 'MasterData\KaryawanController');
